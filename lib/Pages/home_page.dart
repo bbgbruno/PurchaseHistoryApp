@@ -21,6 +21,21 @@ class _HomePageState extends State<HomePage> {
   DashboardData? _dashboard;
   bool _loadingDashboard = true;
 
+  static const _monthNames = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+
+  String _currentMonthLabel() {
+    final now = DateTime.now();
+    return '${_monthNames[now.month - 1]}/${now.year}';
+  }
+
+  String _lastMonthLabel() {
+    final last = DateTime(DateTime.now().year, DateTime.now().month - 1, 1);
+    return '${_monthNames[last.month - 1]}/${last.year}';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -76,110 +91,144 @@ class _HomePageState extends State<HomePage> {
             if (_loadingDashboard)
               const LinearProgressIndicator()
             else if (_dashboard != null) ...[
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      color: Colors.green.shade50,
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Text('Este mês',
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors
-                                        .grey
-                                        .shade600)),
-                            const SizedBox(height: 4),
-                            Text(
-                              'R\$ ${_dashboard!.totalCurrentMonth.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight:
-                                    FontWeight.bold,
-                                color: Colors.green,
-                              ),
-                            ),
-                          ],
+              const Text('Resumo',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700)),
+              const SizedBox(height: 12),
+              Card(
+                color: Colors.green.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _currentMonthLabel(),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors
+                                .grey.shade600),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'R\$ ${_dashboard!.totalCurrentMonth.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Card(
-                      color: Colors.blue.shade50,
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Text('Mês passado',
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors
-                                        .grey
-                                        .shade600)),
-                            const SizedBox(height: 4),
-                            Text(
-                              'R\$ ${_dashboard!.totalLastMonth.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight:
-                                    FontWeight.bold,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: 2, horizontal: 40),
+                child: Divider(
+                    thickness: 2, height: 20),
+              ),
+              Card(
+                color: Colors.blue.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _lastMonthLabel(),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors
+                                .grey.shade600),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'R\$ ${_dashboard!.totalLastMonth.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
               if (_dashboard!.categories.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 20),
                 const Text('Por categoria',
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight:
                             FontWeight.w600)),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 ..._dashboard!.categories.map(
                   (c) => Card(
-                    margin:
-                        const EdgeInsets.only(
-                            bottom: 6),
+                    margin: const EdgeInsets.only(
+                        bottom: 8),
                     child: Padding(
-                      padding:
-                          const EdgeInsets.all(12),
-                      child: Row(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Text(
-                              c.categoryName,
-                              style: const TextStyle(
-                                  fontSize: 14),
-                            ),
-                          ),
                           Text(
-                            'R\$ ${c.totalCurrentMonth.toStringAsFixed(2)}',
+                            c.categoryName,
                             style: const TextStyle(
-                              fontWeight:
-                                  FontWeight.w600,
-                              fontSize: 14,
-                              color: Colors.green,
-                            ),
+                                fontSize: 15,
+                                fontWeight:
+                                    FontWeight.w600),
                           ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'R\$ ${c.totalLastMonth.toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue,
-                            ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  _currentMonthLabel(),
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors
+                                          .grey
+                                          .shade600),
+                                ),
+                              ),
+                              Text(
+                                'R\$ ${c.totalCurrentMonth.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontWeight:
+                                      FontWeight.w600,
+                                  fontSize: 14,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(height: 14),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  _lastMonthLabel(),
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors
+                                          .grey
+                                          .shade600),
+                                ),
+                              ),
+                              Text(
+                                'R\$ ${c.totalLastMonth.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.blue
+                                      .shade700,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
