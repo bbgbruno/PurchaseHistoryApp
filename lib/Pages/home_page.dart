@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'login_page.dart';
 import 'product_search_page.dart';
 import 'purchase_list_page.dart';
 
@@ -13,6 +14,20 @@ class HomePage extends StatelessWidget {
         title: const Text(
           'Purchase History',
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sair',
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const LoginPage()),
+                (_) => false,
+              );
+            },
+          ),
+        ],
       ),
 
       body: Padding(
