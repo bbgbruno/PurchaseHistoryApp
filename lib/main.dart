@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pages/product_search_page.dart';
+import 'pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      home: const ProductSearchPage(),
+      home: const HomePage(),
     );
   }
 }
