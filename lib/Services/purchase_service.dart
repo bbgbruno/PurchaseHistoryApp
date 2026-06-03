@@ -9,9 +9,15 @@ class PurchaseService {
   final String baseUrl =
       'https://purchasehistoryapi.onrender.com/api';
 
-  Future<List<Purchase>> getAll() async {
+  Future<List<Purchase>> getAll({String? userId}) async {
+    var url = '$baseUrl/purchases';
+
+    if (userId != null) {
+      url += '?userId=$userId';
+    }
+
     final response = await http.get(
-      Uri.parse('$baseUrl/purchases'),
+      Uri.parse(url),
     );
 
     if (response.statusCode != 200) {

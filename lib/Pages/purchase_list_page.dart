@@ -5,7 +5,10 @@ import '../services/purchase_service.dart';
 import 'purchase_items_page.dart';
 
 class PurchaseListPage extends StatefulWidget {
-  const PurchaseListPage({super.key});
+  final String userId;
+
+  const PurchaseListPage(
+      {super.key, required this.userId});
 
   @override
   State<PurchaseListPage> createState() =>
@@ -35,7 +38,8 @@ class _PurchaseListPageState
     });
 
     try {
-      final result = await _service.getAll();
+      final result =
+          await _service.getAll(userId: widget.userId);
 
       setState(() {
         _items = result;

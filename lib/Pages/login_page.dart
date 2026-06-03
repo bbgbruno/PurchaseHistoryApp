@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _loading = true);
 
     try {
-      await _authService.login(
+      final user = await _authService.login(
         _emailController.text.trim(),
         _passwordController.text,
       );
@@ -36,7 +36,9 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (_) => const HomePage()),
+          builder: (_) =>
+              HomePage(userId: user.id),
+        ),
       );
 
     } catch (e) {

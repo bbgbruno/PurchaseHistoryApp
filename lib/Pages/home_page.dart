@@ -5,7 +5,9 @@ import 'product_search_page.dart';
 import 'purchase_list_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final String userId;
+
+  const HomePage({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,8 @@ class HomePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
-                            const PurchaseListPage(),
+                            PurchaseListPage(
+                                userId: userId),
                       ),
                     );
                   },
