@@ -89,7 +89,7 @@ class _PurchaseItemsPageState
     if (selected == item.categoryId) return;
 
     try {
-      await _purchaseService.updateCategory(
+      await _purchaseService.updateProductCategory(
           item.id, selected);
       await load();
     } catch (e) {

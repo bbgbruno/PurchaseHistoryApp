@@ -50,11 +50,11 @@ class PurchaseService {
         .toList();
   }
 
-  Future<void> updateCategory(
+  Future<void> updateProductCategory(
       String itemId, String? categoryId) async {
     final response = await http.patch(
       Uri.parse(
-          '$baseUrl/purchase-items/$itemId/category'),
+          '$baseUrl/purchase-items/$itemId/product-category'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'categoryId': categoryId,
