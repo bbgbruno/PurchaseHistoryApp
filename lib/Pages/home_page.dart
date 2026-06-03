@@ -77,84 +77,114 @@ class _HomePageState extends State<HomePage> {
               const LinearProgressIndicator()
             else ...[
               if (_dashboard != null) ...[
-                Card(
-                  color: Colors.blue.shade50,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Icon(Icons.trending_up,
-                            size: 40,
-                            color: Colors.blue
-                                .shade700),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
-                          children: [
-                            const Text(
-                              'Total no último mês',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color:
-                                      Colors.grey),
-                            ),
-                            const SizedBox(
-                                height: 4),
-                            Text(
-                              'R\$ ${_dashboard!.totalLastMonth.toStringAsFixed(2)}',
-                              style:
-                                  const TextStyle(
-                                fontSize: 24,
-                                fontWeight:
-                                    FontWeight
-                                        .bold,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        color: Colors.green.shade50,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.all(12),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Este mês',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors
+                                        .grey
+                                        .shade600),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                  height: 4),
+                              Text(
+                                'R\$ ${_dashboard!.totalCurrentMonth.toStringAsFixed(2)}',
+                                style:
+                                    const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight:
+                                      FontWeight
+                                          .bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Card(
+                        color: Colors.blue.shade50,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.all(12),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Mês passado',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors
+                                        .grey
+                                        .shade600),
+                              ),
+                              const SizedBox(
+                                  height: 4),
+                              Text(
+                                'R\$ ${_dashboard!.totalLastMonth.toStringAsFixed(2)}',
+                                style:
+                                    const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight:
+                                      FontWeight
+                                          .bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 12),
                 if (_dashboard!
                     .categories.isNotEmpty) ...[
                   const Text(
-                    'Por categoria',
+                    'Por categoria (este mês)',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
                   ..._dashboard!.categories.map(
                     (c) => Card(
                       margin:
                           const EdgeInsets.only(
-                              bottom: 6),
+                              bottom: 4),
                       child: Padding(
                         padding:
-                            const EdgeInsets.all(12),
+                            const EdgeInsets.all(10),
                         child: Row(
                           children: [
                             Icon(
                               Icons.label,
+                              size: 18,
                               color: Colors
                                   .purple
                                   .shade300,
                             ),
                             const SizedBox(
-                                width: 12),
+                                width: 10),
                             Expanded(
                               child: Text(
                                 c
                                     .categoryName,
                                 style:
                                     const TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 14,
                                 ),
                               ),
                             ),
@@ -165,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight:
                                     FontWeight
                                         .w600,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                             ),
                           ],
@@ -187,7 +217,7 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(
               width: double.infinity,
-              height: 120,
+              height: 72,
               child: Card(
                 elevation: 4,
                 child: InkWell(
@@ -206,27 +236,27 @@ class _HomePageState extends State<HomePage> {
                       BorderRadius.circular(12),
                   child: Padding(
                     padding:
-                        const EdgeInsets.all(20),
+                        const EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Container(
                           padding:
-                              const EdgeInsets.all(12),
+                              const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors
                                 .orange
                                 .shade50,
                             borderRadius:
-                                BorderRadius.circular(12),
+                                BorderRadius.circular(10),
                           ),
                           child: const Icon(
                             Icons.receipt_long,
-                            size: 40,
+                            size: 28,
                             color: Colors.orange,
                           ),
                         ),
                         const SizedBox(
-                            width: 20),
+                            width: 14),
                         const Column(
                           mainAxisAlignment:
                               MainAxisAlignment
@@ -241,15 +271,15 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight:
                                     FontWeight
                                         .w600,
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            SizedBox(height: 2),
                             Text(
                               'Chave de acesso',
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ],
@@ -271,7 +301,7 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(
               width: double.infinity,
-              height: 120,
+              height: 72,
               child: Card(
                 elevation: 4,
                 child: InkWell(
@@ -290,22 +320,22 @@ class _HomePageState extends State<HomePage> {
                       BorderRadius.circular(12),
                   child: Padding(
                     padding:
-                        const EdgeInsets.all(20),
+                        const EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Container(
                           padding:
-                              const EdgeInsets.all(12),
+                              const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors
                                 .purple
                                 .shade50,
                             borderRadius:
-                                BorderRadius.circular(12),
+                                BorderRadius.circular(10),
                           ),
                           child: const Icon(
                             Icons.label_outline,
-                            size: 40,
+                            size: 28,
                             color: Colors.purple,
                           ),
                         ),
@@ -325,15 +355,15 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight:
                                     FontWeight
                                         .w600,
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            SizedBox(height: 2),
                             Text(
                               'Gerenciar categorias',
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ],
@@ -355,7 +385,7 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(
               width: double.infinity,
-              height: 120,
+              height: 72,
               child: Card(
                 elevation: 4,
                 child: InkWell(
@@ -374,7 +404,7 @@ class _HomePageState extends State<HomePage> {
                       BorderRadius.circular(12),
                   child: Padding(
                     padding:
-                        const EdgeInsets.all(20),
+                        const EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Container(
@@ -390,12 +420,12 @@ class _HomePageState extends State<HomePage> {
                           child: const Icon(
                             Icons
                                 .shopping_cart_checkout,
-                            size: 40,
+                            size: 28,
                             color: Colors.blue,
                           ),
                         ),
                         const SizedBox(
-                            width: 20),
+                            width: 14),
                         const Column(
                           mainAxisAlignment:
                               MainAxisAlignment
@@ -410,15 +440,15 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight:
                                     FontWeight
                                         .w600,
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            SizedBox(height: 2),
                             Text(
                               'Compras importadas',
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ],
@@ -440,7 +470,7 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(
               width: double.infinity,
-              height: 120,
+              height: 72,
               child: Card(
                 elevation: 4,
                 child: InkWell(
@@ -457,7 +487,7 @@ class _HomePageState extends State<HomePage> {
                       BorderRadius.circular(12),
                   child: Padding(
                     padding:
-                        const EdgeInsets.all(20),
+                        const EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Container(
@@ -473,12 +503,12 @@ class _HomePageState extends State<HomePage> {
                           child: const Icon(
                             Icons
                                 .inventory_2_outlined,
-                            size: 40,
+                            size: 28,
                             color: Colors.green,
                           ),
                         ),
                         const SizedBox(
-                            width: 20),
+                            width: 14),
                         const Column(
                           mainAxisAlignment:
                               MainAxisAlignment
@@ -493,15 +523,15 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight:
                                     FontWeight
                                         .w600,
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            SizedBox(height: 2),
                             Text(
                               'Histórico de preços',
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ],

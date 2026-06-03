@@ -22,10 +22,12 @@ class CategorySummary {
 }
 
 class DashboardData {
+  final double totalCurrentMonth;
   final double totalLastMonth;
   final List<CategorySummary> categories;
 
   DashboardData({
+    required this.totalCurrentMonth,
     required this.totalLastMonth,
     required this.categories,
   });
@@ -33,6 +35,8 @@ class DashboardData {
   factory DashboardData.fromJson(
       Map<String, dynamic> json) {
     return DashboardData(
+      totalCurrentMonth:
+          (json['totalCurrentMonth'] ?? 0).toDouble(),
       totalLastMonth:
           (json['totalLastMonth'] ?? 0).toDouble(),
       categories: (json['categories'] as List)
