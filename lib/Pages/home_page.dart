@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'categories_page.dart';
 import 'import_coupon_page.dart';
 import 'login_page.dart';
 import 'product_search_page.dart';
@@ -106,6 +107,89 @@ class HomePage extends StatelessWidget {
                             SizedBox(height: 4),
                             Text(
                               'Chave de acesso',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            /*
+            ==============================================
+            CATEGORIAS
+            ==============================================
+            */
+
+            SizedBox(
+              width: double.infinity,
+              height: 120,
+              child: Card(
+                elevation: 4,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            CategoriesPage(
+                                userId: userId),
+                      ),
+                    );
+                  },
+                  borderRadius:
+                      BorderRadius.circular(12),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding:
+                              const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors
+                                .purple
+                                .shade50,
+                            borderRadius:
+                                BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.label_outline,
+                            size: 40,
+                            color: Colors.purple,
+                          ),
+                        ),
+                        const SizedBox(
+                            width: 20),
+                        const Column(
+                          mainAxisAlignment:
+                              MainAxisAlignment
+                                  .center,
+                          crossAxisAlignment:
+                              CrossAxisAlignment
+                                  .start,
+                          children: [
+                            Text(
+                              'Categorias',
+                              style: TextStyle(
+                                fontWeight:
+                                    FontWeight
+                                        .w600,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Gerenciar categorias',
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,

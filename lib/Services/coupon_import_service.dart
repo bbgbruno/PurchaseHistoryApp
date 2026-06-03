@@ -9,7 +9,7 @@ class CouponImportService {
   Future<void> submit(
       String userId, String accessKey) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/coupon-imports'),
+      Uri.parse('$baseUrl/cupons/imports'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'userId': userId,
