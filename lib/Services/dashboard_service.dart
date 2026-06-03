@@ -4,19 +4,23 @@ import 'package:http/http.dart' as http;
 
 class CategorySummary {
   final String categoryName;
-  final double totalSpent;
+  final double totalCurrentMonth;
+  final double totalLastMonth;
 
   CategorySummary({
     required this.categoryName,
-    required this.totalSpent,
+    required this.totalCurrentMonth,
+    required this.totalLastMonth,
   });
 
   factory CategorySummary.fromJson(
       Map<String, dynamic> json) {
     return CategorySummary(
       categoryName: json['categoryName'] ?? '',
-      totalSpent:
-          (json['totalSpent'] ?? 0).toDouble(),
+      totalCurrentMonth:
+          (json['totalCurrentMonth'] ?? 0).toDouble(),
+      totalLastMonth:
+          (json['totalLastMonth'] ?? 0).toDouble(),
     );
   }
 }
