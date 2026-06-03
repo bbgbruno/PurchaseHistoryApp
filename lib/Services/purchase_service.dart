@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../models/purchase.dart';
+import '../models/purchase_item.dart';
 
 class PurchaseService {
   final String baseUrl =
@@ -22,5 +23,34 @@ class PurchaseService {
     return data
         .map((e) => Purchase.fromJson(e))
         .toList();
+  }
+
+  Future<List<PurchaseItem>> getItems(
+      String purchaseId) async {
+    final response = await http.get(
+      Uri.parse(
+          '$baseUrl/purchases/$purchaseId/items'),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(
+          'Erro ao carregar itens da compra');
+    }
+
+    final List data = jsonDecode(response.body);
+
+    return data
+        .map((e) => PurchaseItem.fromJson(e))
+        .toList();
+  }
+
+  Future<void> delete(String purchaseId) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/purchases/$purchaseId'),
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Erro ao excluir compra');
+    }
   }
 }
