@@ -91,67 +91,72 @@ class _HomePageState extends State<HomePage> {
             if (_loadingDashboard)
               const LinearProgressIndicator()
             else if (_dashboard != null) ...[
-              const Text('Resumo',
+              const Text('Despesas Totais',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700)),
               const SizedBox(height: 12),
               Card(
-                color: Colors.green.shade50,
+                color: Colors.grey.shade50,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      Text(
-                        _currentMonthLabel(),
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors
-                                .grey.shade600),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'R\$ ${_dashboard!.totalCurrentMonth.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _currentMonthLabel(),
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors
+                                      .grey.shade600),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'R\$ ${_dashboard!.totalCurrentMonth.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight:
+                                    FontWeight.bold,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: 2, horizontal: 40),
-                child: Divider(
-                    thickness: 2, height: 20),
-              ),
-              Card(
-                color: Colors.blue.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _lastMonthLabel(),
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors
-                                .grey.shade600),
+                      SizedBox(
+                        height: 48,
+                        child: VerticalDivider(
+                          thickness: 2,
+                          color: Colors.grey.shade300,
+                        ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'R\$ ${_dashboard!.totalLastMonth.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _lastMonthLabel(),
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors
+                                      .grey.shade600),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'R\$ ${_dashboard!.totalLastMonth.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight:
+                                    FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
