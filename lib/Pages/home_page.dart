@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'import_coupon_page.dart';
 import 'login_page.dart';
 import 'product_search_page.dart';
 import 'purchase_list_page.dart';
@@ -38,6 +39,89 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment:
               MainAxisAlignment.center,
           children: [
+            /*
+            ==============================================
+            IMPORTAR CUPOM
+            ==============================================
+            */
+
+            SizedBox(
+              width: double.infinity,
+              height: 120,
+              child: Card(
+                elevation: 4,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            ImportCouponPage(
+                                userId: userId),
+                      ),
+                    );
+                  },
+                  borderRadius:
+                      BorderRadius.circular(12),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding:
+                              const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors
+                                .orange
+                                .shade50,
+                            borderRadius:
+                                BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.receipt_long,
+                            size: 40,
+                            color: Colors.orange,
+                          ),
+                        ),
+                        const SizedBox(
+                            width: 20),
+                        const Column(
+                          mainAxisAlignment:
+                              MainAxisAlignment
+                                  .center,
+                          crossAxisAlignment:
+                              CrossAxisAlignment
+                                  .start,
+                          children: [
+                            Text(
+                              'Importar Cupom',
+                              style: TextStyle(
+                                fontWeight:
+                                    FontWeight
+                                        .w600,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Chave de acesso',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
             /*
             ==============================================
             CONSULTAR COMPRAS
