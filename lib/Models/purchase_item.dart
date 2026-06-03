@@ -10,6 +10,7 @@ class PurchaseItem {
   final String? unit;
   final double unitPrice;
   final double totalPrice;
+  final String? categoryId;
 
   PurchaseItem({
     required this.id,
@@ -23,6 +24,7 @@ class PurchaseItem {
     required this.unit,
     required this.unitPrice,
     required this.totalPrice,
+    this.categoryId,
   });
 
   factory PurchaseItem.fromJson(
@@ -43,6 +45,7 @@ class PurchaseItem {
           (json['unitPrice'] ?? 0).toDouble(),
       totalPrice:
           (json['totalPrice'] ?? 0).toDouble(),
+      categoryId: json['categoryId'],
     );
   }
 }

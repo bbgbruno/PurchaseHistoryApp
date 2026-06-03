@@ -50,6 +50,23 @@ class PurchaseService {
         .toList();
   }
 
+  Future<void> updateCategory(
+      String itemId, String? categoryId) async {
+    final response = await http.patch(
+      Uri.parse(
+          '$baseUrl/purchase-items/$itemId/category'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'categoryId': categoryId,
+      }),
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception(
+          'Erro ao atualizar categoria');
+    }
+  }
+
   Future<void> delete(String purchaseId) async {
     final response = await http.delete(
       Uri.parse('$baseUrl/purchases/$purchaseId'),

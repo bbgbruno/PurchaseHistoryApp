@@ -170,6 +170,8 @@ class _PurchaseListPageState
                                       item.id,
                                   storeName:
                                       item.storeName,
+                                  userId:
+                                      widget.userId,
                                 ),
                               ),
                             );
