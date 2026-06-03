@@ -1,23 +1,54 @@
 import 'package:flutter/material.dart';
 
+import '../services/dashboard_service.dart';
 import 'categories_page.dart';
 import 'import_coupon_page.dart';
 import 'login_page.dart';
 import 'product_search_page.dart';
 import 'purchase_list_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final String userId;
 
   const HomePage({super.key, required this.userId});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _dashboardService = DashboardService();
+  DashboardData? _dashboard;
+  bool _loadingDashboard = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDashboard();
+  }
+
+  Future<void> _loadDashboard() async {
+    try {
+      final data =
+          await _dashboardService.get(widget.userId);
+      if (mounted) {
+        setState(() {
+          _dashboard = data;
+          _loadingDashboard = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _loadingDashboard = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Purchase History',
-        ),
+        title: const Text('Purchase History'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -33,13 +64,121 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(24),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment:
-              MainAxisAlignment.center,
           children: [
+            /*
+            ==============================================
+            DASHBOARD
+            ==============================================
+            */
+            if (_loadingDashboard)
+              const LinearProgressIndicator()
+            else ...[
+              if (_dashboard != null) ...[
+                Card(
+                  color: Colors.blue.shade50,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Icon(Icons.trending_up,
+                            size: 40,
+                            color: Colors.blue
+                                .shade700),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment
+                                  .start,
+                          children: [
+                            const Text(
+                              'Total no último mês',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color:
+                                      Colors.grey),
+                            ),
+                            const SizedBox(
+                                height: 4),
+                            Text(
+                              'R\$ ${_dashboard!.totalLastMonth.toStringAsFixed(2)}',
+                              style:
+                                  const TextStyle(
+                                fontSize: 24,
+                                fontWeight:
+                                    FontWeight
+                                        .bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                if (_dashboard!
+                    .categories.isNotEmpty) ...[
+                  const Text(
+                    'Por categoria',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ..._dashboard!.categories.map(
+                    (c) => Card(
+                      margin:
+                          const EdgeInsets.only(
+                              bottom: 6),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.label,
+                              color: Colors
+                                  .purple
+                                  .shade300,
+                            ),
+                            const SizedBox(
+                                width: 12),
+                            Expanded(
+                              child: Text(
+                                c
+                                    .categoryName,
+                                style:
+                                    const TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'R\$ ${c.totalSpent.toStringAsFixed(2)}',
+                              style:
+                                  const TextStyle(
+                                fontWeight:
+                                    FontWeight
+                                        .w600,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ],
+
+            const SizedBox(height: 16),
+
             /*
             ==============================================
             IMPORTAR CUPOM
@@ -58,7 +197,8 @@ class HomePage extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) =>
                             ImportCouponPage(
-                                userId: userId),
+                                userId:
+                                    widget.userId),
                       ),
                     );
                   },
@@ -141,7 +281,8 @@ class HomePage extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) =>
                             CategoriesPage(
-                                userId: userId),
+                                userId:
+                                    widget.userId),
                       ),
                     );
                   },
@@ -224,7 +365,8 @@ class HomePage extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) =>
                             PurchaseListPage(
-                                userId: userId),
+                                userId:
+                                    widget.userId),
                       ),
                     );
                   },
