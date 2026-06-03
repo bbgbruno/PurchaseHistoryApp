@@ -15,7 +15,7 @@ class ProductService {
   */
 
   final String baseUrl =
-      'http://localhost:5299/api';
+      'https://purchasehistoryapi.onrender.com/api';
 
   /*
   ==========================================================
