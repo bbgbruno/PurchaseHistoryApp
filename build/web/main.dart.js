@@ -80936,7 +80936,7 @@ uo(a){return this.WI(a)},
 WI(a){var s=0,r=A.Q(t.qZ),q,p,o
 var $async$uo=A.R(function(b,c){if(b===1)return A.N(c,r)
 for(;;)switch(s){case 0:s=3
-return A.T(A.axj(A.fO("http://localhost:5299/api/products/search?term="+a)),$async$uo)
+return A.T(A.axj(A.fO("https://purchasehistoryapi.onrender.com/api/products/search?term="+a)),$async$uo)
 case 3:o=c
 if(o.b!==200)throw A.i(A.cU("Erro ao buscar produtos"))
 p=J.kL(B.cV.F6(A.axd(A.awh(o.e)).fe(o.w),null),new A.a6A(),t.T5)
@@ -80950,7 +80950,7 @@ ud(a){return this.W9(a)},
 W9(a){var s=0,r=A.Q(t.eb),q,p
 var $async$ud=A.R(function(b,c){if(b===1)return A.N(c,r)
 for(;;)switch(s){case 0:s=3
-return A.T(A.axj(A.fO("http://localhost:5299/api/products/history/"+a)),$async$ud)
+return A.T(A.axj(A.fO("https://purchasehistoryapi.onrender.com/api/products/history/"+a)),$async$ud)
 case 3:p=c
 q=A.aEM(B.cV.F6(A.axd(A.awh(p.e)).fe(p.w),null))
 s=1
