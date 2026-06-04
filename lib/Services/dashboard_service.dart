@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'api_service.dart';
 
 class CategorySummary {
   final String categoryName;
@@ -52,14 +52,8 @@ class DashboardData {
 }
 
 class DashboardService {
-  final String baseUrl =
-      'https://purchasehistoryapi.onrender.com/api';
-
-  Future<DashboardData> get(String userId) async {
-    final response = await http.get(
-      Uri.parse(
-          '$baseUrl/dashboard?userId=$userId'),
-    );
+  Future<DashboardData> get() async {
+    final response = await ApiService.get('/dashboard');
 
     if (response.statusCode != 200) {
       throw Exception(

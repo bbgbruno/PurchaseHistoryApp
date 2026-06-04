@@ -8,13 +8,11 @@ import '../services/purchase_service.dart';
 class PurchaseItemsPage extends StatefulWidget {
   final String purchaseId;
   final String storeName;
-  final String userId;
 
   const PurchaseItemsPage({
     super.key,
     required this.purchaseId,
     required this.storeName,
-    required this.userId,
   });
 
   @override
@@ -46,7 +44,7 @@ class _PurchaseItemsPageState
       final items = await _purchaseService
           .getItems(widget.purchaseId);
       final categories = await _categoryService
-          .getAll(widget.userId);
+          .getAll();
 
       setState(() {
         _items = items;

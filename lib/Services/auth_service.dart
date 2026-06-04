@@ -2,13 +2,17 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'api_service.dart';
+
 class AuthResult {
+  final String token;
   final String id;
   final String name;
   final String email;
   final bool isActive;
 
   AuthResult({
+    required this.token,
     required this.id,
     required this.name,
     required this.email,
@@ -17,6 +21,7 @@ class AuthResult {
 
   factory AuthResult.fromJson(Map<String, dynamic> json) {
     return AuthResult(
+      token: json['token'] ?? '',
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       email: json['email'] ?? '',
@@ -26,14 +31,14 @@ class AuthResult {
 }
 
 class AuthService {
-  final String baseUrl =
-      'https://purchasehistoryapi.onrender.com/api';
-
   Future<AuthResult> login(
       String email, String password) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/login'),
-      headers: {'Content-Type': 'application/json'},
+      Uri.parse(
+          '${ApiService.baseUrl}/auth/login'),
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: jsonEncode({
         'email': email,
         'password': password,
@@ -42,22 +47,28 @@ class AuthService {
 
     if (response.statusCode == 401) {
       final body = jsonDecode(response.body);
-      throw Exception(body['message'] ?? 'Credenciais inválidas.');
+      throw Exception(
+          body['message'] ??
+              'Credenciais inválidas.');
     }
 
     if (response.statusCode != 200) {
       throw Exception('Erro ao fazer login.');
     }
 
-    return AuthResult.fromJson(
+    final result = AuthResult.fromJson(
         jsonDecode(response.body));
+    ApiService.setToken(result.token);
+    return result;
   }
 
-  Future<void> register(
-      String name, String email, String password) async {
+  Future<void> register(String name, String email,
+      String password) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/users'),
-      headers: {'Content-Type': 'application/json'},
+      Uri.parse('${ApiService.baseUrl}/users'),
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: jsonEncode({
         'name': name,
         'email': email,
@@ -66,7 +77,8 @@ class AuthService {
     );
 
     if (response.statusCode == 409) {
-      throw Exception('E-mail já cadastrado.');
+      throw Exception(
+          'E-mail já cadastrado.');
     }
 
     if (response.statusCode != 201) {
@@ -77,8 +89,11 @@ class AuthService {
   Future<void> forgotPassword(
       String email, String newPassword) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/forgot-password'),
-      headers: {'Content-Type': 'application/json'},
+      Uri.parse(
+          '${ApiService.baseUrl}/auth/forgot-password'),
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: jsonEncode({
         'email': email,
         'newPassword': newPassword,
@@ -86,11 +101,13 @@ class AuthService {
     );
 
     if (response.statusCode == 404) {
-      throw Exception('E-mail não encontrado.');
+      throw Exception(
+          'E-mail não encontrado.');
     }
 
     if (response.statusCode != 200) {
-      throw Exception('Erro ao redefinir senha.');
+      throw Exception(
+          'Erro ao redefinir senha.');
     }
   }
 }

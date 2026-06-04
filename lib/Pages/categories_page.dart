@@ -4,10 +4,7 @@ import '../models/category.dart';
 import '../services/category_service.dart';
 
 class CategoriesPage extends StatefulWidget {
-  final String userId;
-
-  const CategoriesPage(
-      {super.key, required this.userId});
+  const CategoriesPage({super.key});
 
   @override
   State<CategoriesPage> createState() =>
@@ -31,7 +28,7 @@ class _CategoriesPageState
 
     try {
       final result =
-          await _service.getAll(widget.userId);
+          await _service.getAll();
       setState(() => _items = result);
     } catch (e) {
       if (!mounted) return;
@@ -48,7 +45,7 @@ class _CategoriesPageState
     if (name == null || name.isEmpty) return;
 
     try {
-      await _service.create(widget.userId, name);
+      await _service.create(name);
       await load();
     } catch (e) {
       if (!mounted) return;
@@ -63,7 +60,7 @@ class _CategoriesPageState
     if (name == null || name.isEmpty) return;
 
     try {
-      await _service.update(item.id, widget.userId, name);
+      await _service.update(item.id, name);
       await load();
     } catch (e) {
       if (!mounted) return;
@@ -100,7 +97,7 @@ class _CategoriesPageState
     if (confirmed != true) return;
 
     try {
-      await _service.delete(item.id, widget.userId);
+      await _service.delete(item.id);
       await load();
     } catch (e) {
       if (!mounted) return;
