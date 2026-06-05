@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/coupon_import_service.dart';
 
 class ImportCouponPage extends StatefulWidget {
-  final String userId;
-
-  const ImportCouponPage(
-      {super.key, required this.userId});
+  const ImportCouponPage({super.key});
 
   @override
   State<ImportCouponPage> createState() =>
@@ -27,7 +24,6 @@ class _ImportCouponPageState
 
     try {
       await _service.submit(
-        widget.userId,
         _keyController.text.trim(),
       );
 

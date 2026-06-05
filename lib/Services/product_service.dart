@@ -1,43 +1,20 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-
 import '../models/product_search_result.dart';
-
 import '../models/product_details.dart';
+import 'api_service.dart';
 
 class ProductService {
-
-  /*
-  ==========================================================
-  URL API
-  ==========================================================
-  */
-
-  final String baseUrl =
-      'https://purchasehistoryapi.onrender.com/api';
-
-  /*
-  ==========================================================
-  SEARCH
-  ==========================================================
-  */
-
   Future<List<ProductSearchResult>> search(
       String term) async {
-
-    final response = await http.get(
-      Uri.parse(
-        '$baseUrl/products/search?term=$term',
-      ),
-    );
+    final response = await ApiService.get(
+        '/products/search?term=$term');
 
     if (response.statusCode != 200) {
       throw Exception('Erro ao buscar produtos');
     }
 
-    final List data =
-        jsonDecode(response.body);
+    final List data = jsonDecode(response.body);
 
     return data
         .map((e) =>
@@ -46,19 +23,17 @@ class ProductService {
   }
 
   Future<ProductDetails> getDetails(
-    String productId) async {
+      String productId) async {
+    final response = await ApiService.get(
+        '/products/history/$productId');
 
-  final response = await http.get(
-    Uri.parse(
-      '$baseUrl/products/history/$productId',
-    ),
-  );
+    if (response.statusCode != 200) {
+      throw Exception(
+          'Erro ao carregar detalhes');
+    }
 
-  final data =
-      jsonDecode(response.body);
+    final data = jsonDecode(response.body);
 
-  return ProductDetails.fromJson(data);
-}
-
-
+    return ProductDetails.fromJson(data);
+  }
 }

@@ -1,24 +1,16 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+import 'api_service.dart';
 
 class CouponImportService {
-  final String baseUrl =
-      'https://purchasehistoryapi.onrender.com/api';
-
-  Future<void> submit(
-      String userId, String accessKey) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/cupons/imports'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'userId': userId,
-        'accessKey': accessKey,
-      }),
-    );
+  Future<void> submit(String accessKey) async {
+    final response = await ApiService.post(
+        '/cupons/imports', {
+      'accessKey': accessKey,
+      'userId': ApiService.userId
+    });
 
     if (response.statusCode != 200) {
-      throw Exception('Erro ao salvar chave.');
+      throw Exception(
+          'Erro ao importar cupom');
     }
   }
 }

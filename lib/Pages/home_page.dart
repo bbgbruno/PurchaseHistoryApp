@@ -8,9 +8,7 @@ import 'product_search_page.dart';
 import 'purchase_list_page.dart';
 
 class HomePage extends StatefulWidget {
-  final String userId;
-
-  const HomePage({super.key, required this.userId});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -45,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadDashboard() async {
     try {
       final data =
-          await _dashboardService.get(widget.userId);
+          await _dashboardService.get();
       if (mounted) {
         setState(() {
           _dashboard = data;
@@ -262,9 +260,7 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
-                            ImportCouponPage(
-                                userId:
-                                    widget.userId),
+                            const ImportCouponPage(),
                       ),
                     );
                   },
@@ -346,9 +342,7 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
-                            CategoriesPage(
-                                userId:
-                                    widget.userId),
+                            const CategoriesPage(),
                       ),
                     );
                   },
@@ -430,9 +424,7 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
-                            PurchaseListPage(
-                                userId:
-                                    widget.userId),
+                            const PurchaseListPage(),
                       ),
                     );
                   },
