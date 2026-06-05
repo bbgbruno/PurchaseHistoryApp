@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/coupon_import_service.dart';
+import 'qr_scanner_page.dart';
 
 class ImportCouponPage extends StatefulWidget {
   const ImportCouponPage({super.key});
@@ -16,6 +17,18 @@ class _ImportCouponPageState
   final _keyController = TextEditingController();
   final _service = CouponImportService();
   bool _loading = false;
+
+  Future<void> _scanQrCode() async {
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+          builder: (_) => const QrScannerPage()),
+    );
+
+    if (result != null) {
+      _keyController.text = result;
+    }
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
@@ -89,12 +102,19 @@ class _ImportCouponPageState
                 const SizedBox(height: 24),
                 TextFormField(
                   controller: _keyController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Chave de acesso',
                     hintText: '0000 0000 0000 ...',
-                    prefixIcon:
-                        Icon(Icons.vpn_key_outlined),
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(
+                        Icons.vpn_key_outlined),
+                    suffixIcon: IconButton(
+                      icon: const Icon(
+                          Icons.qr_code_scanner),
+                      tooltip: 'Escanear QR Code',
+                      onPressed: _scanQrCode,
+                    ),
+                    border:
+                        OutlineInputBorder(),
                   ),
                   maxLines: 3,
                   validator: (v) => v == null ||
