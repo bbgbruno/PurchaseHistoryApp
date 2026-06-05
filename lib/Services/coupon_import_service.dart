@@ -4,7 +4,8 @@ class CouponImportService {
   Future<void> submit(String accessKey) async {
     final response = await ApiService.post(
         '/cupons/imports', {
-      'accessKey': accessKey
+      'accessKey': accessKey,
+      'userId': ApiService.userId
     });
 
     if (response.statusCode != 200) {

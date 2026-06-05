@@ -22,7 +22,7 @@ class CategoryService {
 
   Future<void> create(String name) async {
     final response = await ApiService.post(
-        '/categories', {'name': name});
+        '/categories', {'name': name, 'userId': ApiService.userId});
 
     if (response.statusCode != 201) {
       throw Exception('Erro ao criar categoria');
@@ -32,7 +32,7 @@ class CategoryService {
   Future<void> update(
       String id, String name) async {
     final response = await ApiService.put(
-        '/categories/$id', {'name': name});
+        '/categories/$id', {'name': name, 'userId': ApiService.userId});
 
     if (response.statusCode != 200) {
       throw Exception(

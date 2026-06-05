@@ -6,25 +6,27 @@ class ApiService {
   static const String baseUrl =
       'https://purchasehistoryapi.onrender.com/api';
 
-  static String? _token;
+  static String? _userId;
 
-  static void setToken(String? token) {
-    _token = token;
+  static void setUserId(String? userId) {
+    _userId = userId;
   }
 
-  static Map<String, String> get _headers {
-    final headers = <String, String>{
-      'Content-Type': 'application/json',
-    };
-    if (_token != null) {
-      headers['Authorization'] = 'Bearer $_token';
-    }
-    return headers;
+  static String? get userId => _userId;
+
+  static String _withUser(String path) {
+    if (_userId == null) return path;
+    final separator = path.contains('?') ? '&' : '?';
+    return '$path${separator}userId=$_userId';
   }
+
+  static Map<String, String> get _headers => {
+        'Content-Type': 'application/json',
+      };
 
   static Future<http.Response> get(String path) async {
     return await http.get(
-      Uri.parse('$baseUrl$path'),
+      Uri.parse('$baseUrl${_withUser(path)}'),
       headers: _headers,
     );
   }
@@ -58,39 +60,8 @@ class ApiService {
 
   static Future<http.Response> delete(String path) async {
     return await http.delete(
-      Uri.parse('$baseUrl$path'),
+      Uri.parse('$baseUrl${_withUser(path)}'),
       headers: _headers,
     );
-  }
-
-  static Future<http.Response> uploadFile(
-      String path, String filePath, String fieldName) async {
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl$path'),
-    );
-    if (_token != null) {
-      request.headers['Authorization'] = 'Bearer $_token';
-    }
-    request.files.add(await http.MultipartFile.fromPath(
-        fieldName, filePath));
-    final streamedResponse = await request.send();
-    return await http.Response.fromStream(streamedResponse);
-  }
-
-  static Future<http.Response> uploadBytes(
-      String path, List<int> bytes, String fileName) async {
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl$path'),
-    );
-    if (_token != null) {
-      request.headers['Authorization'] = 'Bearer $_token';
-    }
-    request.files.add(http.MultipartFile.fromBytes(
-        'file', bytes,
-        filename: fileName));
-    final streamedResponse = await request.send();
-    return await http.Response.fromStream(streamedResponse);
   }
 }

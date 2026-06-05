@@ -5,14 +5,12 @@ import 'package:http/http.dart' as http;
 import 'api_service.dart';
 
 class AuthResult {
-  final String token;
   final String id;
   final String name;
   final String email;
   final bool isActive;
 
   AuthResult({
-    required this.token,
     required this.id,
     required this.name,
     required this.email,
@@ -21,7 +19,6 @@ class AuthResult {
 
   factory AuthResult.fromJson(Map<String, dynamic> json) {
     return AuthResult(
-      token: json['token'] ?? '',
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       email: json['email'] ?? '',
@@ -58,7 +55,7 @@ class AuthService {
 
     final result = AuthResult.fromJson(
         jsonDecode(response.body));
-    ApiService.setToken(result.token);
+    ApiService.setUserId(result.id);
     return result;
   }
 
