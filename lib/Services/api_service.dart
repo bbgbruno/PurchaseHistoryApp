@@ -52,7 +52,7 @@ class ApiService {
   static Future<http.Response> patch(
       String path, Map<String, dynamic> body) async {
     return await http.patch(
-      Uri.parse('$baseUrl$path'),
+      Uri.parse('$baseUrl${_withUser(path)}'),
       headers: _headers,
       body: jsonEncode(body),
     );
