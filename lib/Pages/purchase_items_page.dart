@@ -64,23 +64,36 @@ class _PurchaseItemsPageState
       PurchaseItem item) async {
     final selected = await showModalBottomSheet<String?>(
       context: context,
-      builder: (ctx) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            title: const Text('Sem categoria'),
-            leading: const Icon(Icons.block),
-            onTap: () => Navigator.pop(ctx, null),
-          ),
-          ..._categories.map((c) => ListTile(
-                title: Text(c.name),
-                leading: const Icon(Icons.label),
-                selected:
-                    c.id == item.categoryId,
-                onTap: () =>
-                    Navigator.pop(ctx, c.id),
-              )),
-        ],
+      isScrollControlled: true,
+      builder: (ctx) => DraggableScrollableSheet(
+        initialChildSize: 0.5,
+        minChildSize: 0.3,
+        maxChildSize: 0.8,
+        expand: false,
+        builder: (_, scrollController) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text('Sem categoria'),
+              leading: const Icon(Icons.block),
+              onTap: () => Navigator.pop(ctx, null),
+            ),
+            Flexible(
+              child: ListView(
+                controller: scrollController,
+                shrinkWrap: true,
+                children: _categories.map((c) => ListTile(
+                      title: Text(c.name),
+                      leading: const Icon(Icons.label),
+                      selected:
+                          c.id == item.categoryId,
+                      onTap: () =>
+                          Navigator.pop(ctx, c.id),
+                    )).toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -89,7 +102,27 @@ class _PurchaseItemsPageState
     try {
       await _purchaseService.updateProductCategory(
           item.id, selected);
-      await load();
+      final index = _items.indexWhere(
+          (i) => i.id == item.id);
+      if (index != -1) {
+        setState(() {
+          _items[index] = PurchaseItem(
+            id: item.id,
+            purchaseId: item.purchaseId,
+            productId: item.productId,
+            originalDescription:
+                item.originalDescription,
+            productCode: item.productCode,
+            ncmCode: item.ncmCode,
+            ean: item.ean,
+            quantity: item.quantity,
+            unit: item.unit,
+            unitPrice: item.unitPrice,
+            totalPrice: item.totalPrice,
+            categoryId: selected,
+          );
+        });
+      }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
