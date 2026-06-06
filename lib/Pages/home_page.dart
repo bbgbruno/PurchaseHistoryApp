@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/dashboard_service.dart';
 import 'categories_page.dart';
+import 'category_detail_page.dart';
 import 'import_coupon_page.dart';
 import 'login_page.dart';
 import 'product_search_page.dart';
@@ -181,9 +182,26 @@ class _HomePageState extends State<HomePage> {
                   (c) => Card(
                     margin: const EdgeInsets.only(
                         bottom: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
+                    child: InkWell(
+                      borderRadius:
+                          BorderRadius.circular(12),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                CategoryDetailPage(
+                              categoryId: c.categoryId,
+                              categoryName:
+                                  c.categoryName,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.all(12),
+                        child: Column(
                         crossAxisAlignment:
                             CrossAxisAlignment.start,
                         children: [
@@ -246,10 +264,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-              ],
+              ),
             ],
-
-            const SizedBox(height: 16),
+          ],
+          const SizedBox(height: 16),
 
             /*
             ==============================================
