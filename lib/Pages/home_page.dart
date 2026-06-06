@@ -64,6 +64,14 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Purchase History'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.refresh),
+            tooltip: 'Atualizar',
+            onPressed: () {
+              setState(() => _loadingDashboard = true);
+              _loadDashboard();
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Sair',
             onPressed: () {
