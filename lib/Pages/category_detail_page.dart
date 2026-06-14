@@ -98,18 +98,33 @@ class _CategoryDetailPageState
           color: _bgColor(item.productId),
           margin: const EdgeInsets.symmetric(
               horizontal: 12, vertical: 4),
+          elevation: 2,
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    item.productName,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: _textColor(item.productId),
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.productName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: _textColor(item.productId),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Qtd: ${item.quantity.toStringAsFixed(3)} ${item.unit ?? ''}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: _textColor(item.productId) ??
+                              Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -117,23 +132,28 @@ class _CategoryDetailPageState
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${item.quantity.toStringAsFixed(0)} ${item.quantity == 1 ? 'un' : 'uns'}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: _textColor(item.productId) ??
-                            Colors.grey.shade700,
+                      'R\$ ${item.unitPrice.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'R\$ ${item.totalPrice.toStringAsFixed(2)}',
+                      'Total: R\$ ${item.totalPrice.toStringAsFixed(2)}',
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: _textColor(item.productId),
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.check_circle,
+                  color: inBoth
+                      ? Colors.orange
+                      : Colors.green,
                 ),
               ],
             ),

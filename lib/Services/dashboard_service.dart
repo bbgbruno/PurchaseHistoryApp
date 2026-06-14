@@ -32,12 +32,16 @@ class CategoryProductItem {
   final String productId;
   final String productName;
   final double quantity;
+  final String? unit;
+  final double unitPrice;
   final double totalPrice;
 
   CategoryProductItem({
     required this.productId,
     required this.productName,
     required this.quantity,
+    this.unit,
+    required this.unitPrice,
     required this.totalPrice,
   });
 
@@ -47,6 +51,8 @@ class CategoryProductItem {
       productId: json['productId'] ?? '',
       productName: json['productName'] ?? '',
       quantity: (json['quantity'] ?? 0).toDouble(),
+      unit: json['unit'],
+      unitPrice: (json['unitPrice'] ?? 0).toDouble(),
       totalPrice: (json['totalPrice'] ?? 0).toDouble(),
     );
   }

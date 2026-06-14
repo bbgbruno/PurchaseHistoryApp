@@ -148,6 +148,9 @@ class _PurchaseListPageState
                       final item =
                           _items[index];
 
+                      final fullyCat =
+                          item.isFullyCategorized;
+
                       return Card(
                         margin:
                             const EdgeInsets
@@ -156,6 +159,9 @@ class _PurchaseListPageState
                           vertical: 6,
                         ),
                         elevation: 2,
+                        color: fullyCat
+                            ? Colors.green.shade50
+                            : null,
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
@@ -207,6 +213,22 @@ class _PurchaseListPageState
                                           color: Colors
                                               .grey
                                               .shade600,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                          height: 2),
+                                      Text(
+                                        '${item.categorizedItems}/${item.totalItems} categorizados',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: fullyCat
+                                              ? Colors
+                                                  .green
+                                              : Colors
+                                                  .orange,
+                                          fontWeight:
+                                              FontWeight
+                                                  .w500,
                                         ),
                                       ),
                                     ],
