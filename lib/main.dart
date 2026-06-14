@@ -51,10 +51,14 @@ class _EntryPointState extends State<_EntryPoint> {
   }
 
   Future<void> _tryAutoLogin() async {
-    final session = await SessionService.load();
-    if (session != null) {
-      ApiService.setUserId(session.userId);
-      if (mounted) setState(() => _hasSession = true);
+    try {
+      final session = await SessionService.load();
+      if (session != null) {
+        ApiService.setUserId(session.userId);
+        if (mounted) setState(() => _hasSession = true);
+      }
+    } catch (_) {
+      // SharedPreferences unavailable (e.g. private mode)
     }
     if (mounted) {
       setState(() => _checking = false);
