@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/dashboard_service.dart';
+import '../services/session_service.dart';
 import 'categories_page.dart';
 import 'category_detail_page.dart';
 import 'import_coupon_page.dart';
@@ -76,6 +77,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.logout),
             tooltip: 'Sair',
             onPressed: () {
+              SessionService.clear();
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(

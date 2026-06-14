@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final _authService = AuthService();
   bool _loading = false;
   bool _obscure = true;
+  bool _remember = true;
 
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
@@ -29,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       await _authService.login(
         _emailController.text.trim(),
         _passwordController.text,
+        _remember,
       );
 
       if (!mounted) return;
@@ -119,19 +121,27 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 8),
 
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) =>
-                                const ForgotPasswordPage()),
-                      );
-                    },
-                    child: const Text('Esqueceu a senha?'),
-                  ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _remember,
+                      onChanged: (v) =>
+                          setState(() => _remember = v ?? true),
+                    ),
+                    const Text('Lembrar acesso'),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                                  const ForgotPasswordPage()),
+                        );
+                      },
+                      child: const Text('Esqueceu a senha?'),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
 

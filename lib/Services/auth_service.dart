@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'api_service.dart';
+import 'session_service.dart';
 
 class AuthResult {
   final String id;
@@ -29,7 +30,8 @@ class AuthResult {
 
 class AuthService {
   Future<AuthResult> login(
-      String email, String password) async {
+      String email, String password,
+      [bool remember = true]) async {
     final response = await http.post(
       Uri.parse(
           '${ApiService.baseUrl}/auth/login'),
@@ -56,6 +58,15 @@ class AuthService {
     final result = AuthResult.fromJson(
         jsonDecode(response.body));
     ApiService.setUserId(result.id);
+    if (remember) {
+      await SessionService.save(
+        userId: result.id,
+        name: result.name,
+        email: result.email,
+      );
+    } else {
+      await SessionService.clear();
+    }
     return result;
   }
 
