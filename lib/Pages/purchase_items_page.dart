@@ -60,6 +60,75 @@ class _PurchaseItemsPageState
     }
   }
 
+  Future<void> _editDiscount(
+      PurchaseItem item, int index) async {
+    final controller = TextEditingController(
+        text: item.discount.toStringAsFixed(2));
+
+    final discount = await showDialog<double>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Desconto no item'),
+        content: TextField(
+          controller: controller,
+          keyboardType:
+              TextInputType.numberWithOptions(decimal: true),
+          decoration: const InputDecoration(
+            labelText: 'Valor do desconto (R\$)',
+            border: OutlineInputBorder(),
+            prefixText: 'R\$ ',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              final v = double.tryParse(
+                  controller.text.replaceAll(',', '.'));
+              Navigator.pop(ctx, v != null && v > 0 ? v : 0);
+            },
+            child: const Text('Salvar'),
+          ),
+        ],
+      ),
+    );
+
+    if (discount == null) return;
+
+    try {
+      await _purchaseService.updateDiscount(
+          item.id, discount);
+      final newUnitPrice = item.unitPrice - discount;
+      final newTotal =
+          (newUnitPrice < 0 ? 0 : newUnitPrice) * item.quantity;
+      setState(() {
+        _items[index] = PurchaseItem(
+          id: item.id,
+          purchaseId: item.purchaseId,
+          productId: item.productId,
+          originalDescription: item.originalDescription,
+          productCode: item.productCode,
+          ncmCode: item.ncmCode,
+          ean: item.ean,
+          quantity: item.quantity,
+          unit: item.unit,
+          unitPrice: newUnitPrice < 0 ? 0 : newUnitPrice,
+          discount: discount,
+          totalPrice: newTotal,
+          categoryId: item.categoryId,
+        );
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
+  }
+
   Future<void> _selectCategory(
       PurchaseItem item) async {
     final selected = await showModalBottomSheet<String?>(
@@ -159,6 +228,9 @@ class _PurchaseItemsPageState
                       final hasCategory =
                           item.categoryId != null;
 
+                      final hasDiscount =
+                          item.discount > 0;
+
                       return Card(
                         margin:
                             const EdgeInsets.symmetric(
@@ -168,15 +240,17 @@ class _PurchaseItemsPageState
                             ? Colors.green.shade50
                             : null,
                         elevation: 2,
-                        child: InkWell(
-                          onTap: () =>
-                              _selectCategory(item),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.all(16),
-                            child: Row(
-                              children: [
-                                Expanded(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.all(12),
+                          child: Row(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () =>
+                                      _selectCategory(item),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment
@@ -202,52 +276,104 @@ class _PurchaseItemsPageState
                                           fontSize: 13,
                                         ),
                                       ),
+                                      if (hasDiscount)
+                                        Padding(
+                                          padding: const EdgeInsets
+                                              .only(
+                                              top: 4),
+                                          child: Text(
+                                            'Desc: R\$ ${item.discount.toStringAsFixed(2)}',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors
+                                                  .red,
+                                              fontWeight:
+                                                  FontWeight
+                                                      .w500,
+                                            ),
+                                          ),
+                                        ),
                                     ],
                                   ),
                                 ),
-                                const SizedBox(
-                                    width: 12),
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment
-                                          .end,
-                                  children: [
-                                    Text(
-                                      'R\$ ${item.unitPrice.toStringAsFixed(2)}',
-                                      style: const TextStyle(
-                                        fontWeight:
-                                            FontWeight
-                                                .bold,
-                                        fontSize: 16,
-                                      ),
+                              ),
+                              const SizedBox(width: 12),
+                              Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    hasDiscount
+                                        ? 'R\$ ${item.unitPrice.toStringAsFixed(2)}'
+                                        : 'R\$ ${item.unitPrice.toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      fontWeight:
+                                          FontWeight.bold,
+                                      fontSize: 16,
                                     ),
-                                    const SizedBox(
-                                        height: 2),
+                                  ),
+                                  if (hasDiscount)
                                     Text(
-                                      'Total: R\$ ${item.totalPrice.toStringAsFixed(2)}',
+                                      'R\$ ${item.grossUnitPrice.toStringAsFixed(2)}',
                                       style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 11,
                                         color: Colors
                                             .grey
-                                            .shade600,
+                                            .shade400,
+                                        decoration:
+                                            TextDecoration
+                                                .lineThrough,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                    width: 8),
-                                Icon(
-                                  hasCategory
-                                      ? Icons
-                                          .check_circle
-                                      : Icons
-                                          .label_outline,
-                                  color: hasCategory
-                                      ? Colors.green
-                                      : Colors.grey,
-                                ),
-                              ],
-                            ),
+                                  const SizedBox(
+                                      height: 2),
+                                  Text(
+                                    'Total: R\$ ${item.totalPrice.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors
+                                          .grey
+                                          .shade600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 4),
+                              Column(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                        Icons
+                                            .discount_outlined,
+                                        size: 20),
+                                    tooltip: 'Desconto',
+                                    onPressed: () =>
+                                        _editDiscount(
+                                            item, index),
+                                    padding:
+                                        EdgeInsets.zero,
+                                    constraints:
+                                        const BoxConstraints(),
+                                    color: hasDiscount
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                  const SizedBox(
+                                      height: 8),
+                                  Icon(
+                                    hasCategory
+                                        ? Icons
+                                            .check_circle
+                                        : Icons
+                                            .label_outline,
+                                    size: 20,
+                                    color: hasCategory
+                                        ? Colors.green
+                                        : Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       );

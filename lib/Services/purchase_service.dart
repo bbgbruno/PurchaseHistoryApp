@@ -49,6 +49,19 @@ class PurchaseService {
     }
   }
 
+  Future<void> updateDiscount(
+      String itemId, double discount) async {
+    final response = await ApiService.patch(
+      '/purchase-items/$itemId/discount',
+      {'discount': discount},
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception(
+          'Erro ao atualizar desconto');
+    }
+  }
+
   Future<void> delete(String purchaseId) async {
     final response = await ApiService.delete(
         '/purchases/$purchaseId');

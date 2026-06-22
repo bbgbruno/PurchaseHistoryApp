@@ -9,6 +9,7 @@ class PurchaseItem {
   final double quantity;
   final String? unit;
   final double unitPrice;
+  final double discount;
   final double totalPrice;
   final String? categoryId;
 
@@ -23,9 +24,12 @@ class PurchaseItem {
     required this.quantity,
     required this.unit,
     required this.unitPrice,
+    this.discount = 0,
     required this.totalPrice,
     this.categoryId,
   });
+
+  double get grossUnitPrice => unitPrice + discount;
 
   factory PurchaseItem.fromJson(
       Map<String, dynamic> json) {
@@ -43,6 +47,8 @@ class PurchaseItem {
       unit: json['unit'],
       unitPrice:
           (json['unitPrice'] ?? 0).toDouble(),
+      discount:
+          (json['discount'] ?? 0).toDouble(),
       totalPrice:
           (json['totalPrice'] ?? 0).toDouble(),
       categoryId: json['categoryId'],
