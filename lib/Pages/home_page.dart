@@ -172,6 +172,79 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
+              const Text('Despesas Categorizadas',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700)),
+              const SizedBox(height: 12),
+              Card(
+                color: Colors.orange.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _currentMonthLabel(),
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors
+                                      .grey.shade600),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'R\$ ${_dashboard!.categorizedCurrentMonth.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight:
+                                    FontWeight.bold,
+                                color: Colors.orange,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 48,
+                        child: VerticalDivider(
+                          thickness: 2,
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _lastMonthLabel(),
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors
+                                      .grey.shade600),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'R\$ ${_dashboard!.categorizedLastMonth.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight:
+                                    FontWeight.bold,
+                                color: Colors.orange,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               if (_dashboard!.categories.isNotEmpty) ...[
                 const SizedBox(height: 20),
                 const Text('Por categoria',

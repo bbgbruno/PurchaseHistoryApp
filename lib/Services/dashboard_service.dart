@@ -91,11 +91,15 @@ class CategoryProductsData {
 class DashboardData {
   final double totalCurrentMonth;
   final double totalLastMonth;
+  final double categorizedCurrentMonth;
+  final double categorizedLastMonth;
   final List<CategorySummary> categories;
 
   DashboardData({
     required this.totalCurrentMonth,
     required this.totalLastMonth,
+    required this.categorizedCurrentMonth,
+    required this.categorizedLastMonth,
     required this.categories,
   });
 
@@ -106,6 +110,10 @@ class DashboardData {
           (json['totalCurrentMonth'] ?? 0).toDouble(),
       totalLastMonth:
           (json['totalLastMonth'] ?? 0).toDouble(),
+      categorizedCurrentMonth:
+          (json['categorizedCurrentMonth'] ?? 0).toDouble(),
+      categorizedLastMonth:
+          (json['categorizedLastMonth'] ?? 0).toDouble(),
       categories: (json['categories'] as List)
           .map((e) =>
               CategorySummary.fromJson(e))
