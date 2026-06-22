@@ -163,8 +163,8 @@ class _PurchaseListPageState
                             ? Colors.green.shade50
                             : null,
                         child: InkWell(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (_) =>
@@ -176,6 +176,7 @@ class _PurchaseListPageState
                                 ),
                               ),
                             );
+                            load();
                           },
                           borderRadius:
                               BorderRadius.circular(12),
