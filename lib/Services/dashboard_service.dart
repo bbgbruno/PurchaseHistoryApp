@@ -122,6 +122,50 @@ class DashboardData {
   }
 }
 
+class MonthTotal {
+  final int year;
+  final int month;
+  final double total;
+
+  MonthTotal({
+    required this.year,
+    required this.month,
+    required this.total,
+  });
+
+  factory MonthTotal.fromJson(
+      Map<String, dynamic> json) {
+    return MonthTotal(
+      year: json['year'] ?? 0,
+      month: json['month'] ?? 0,
+      total: (json['total'] ?? 0).toDouble(),
+    );
+  }
+}
+
+class CategoryMonthlyData {
+  final String categoryId;
+  final String categoryName;
+  final List<MonthTotal> months;
+
+  CategoryMonthlyData({
+    required this.categoryId,
+    required this.categoryName,
+    required this.months,
+  });
+
+  factory CategoryMonthlyData.fromJson(
+      Map<String, dynamic> json) {
+    return CategoryMonthlyData(
+      categoryId: json['categoryId'] ?? '',
+      categoryName: json['categoryName'] ?? '',
+      months: (json['months'] as List)
+          .map((e) => MonthTotal.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
 class DashboardService {
   Future<DashboardData> get() async {
     final response = await ApiService.get('/dashboard');
@@ -146,6 +190,20 @@ class DashboardService {
     }
 
     return CategoryProductsData.fromJson(
+        jsonDecode(response.body));
+  }
+
+  Future<CategoryMonthlyData> getCategoryMonthly(
+      String categoryId) async {
+    final response = await ApiService.get(
+        '/dashboard/category/$categoryId/monthly');
+
+    if (response.statusCode != 200) {
+      throw Exception(
+          'Erro ao carregar dados mensais');
+    }
+
+    return CategoryMonthlyData.fromJson(
         jsonDecode(response.body));
   }
 }
