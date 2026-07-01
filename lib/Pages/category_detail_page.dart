@@ -214,6 +214,44 @@ class _CategoryDetailPageState
     );
   }
 
+  Widget _buildMonthSection(
+      List<CategoryProductItem> items, String monthLabel, Color color) {
+    final totalQty = items.fold<double>(
+        0, (sum, item) => sum + item.quantity);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 16, vertical: 8),
+          child: Row(
+            children: [
+              Text(
+                monthLabel,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: color,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                'Total: ${totalQty.toStringAsFixed(totalQty == totalQty.truncateToDouble() ? 0 : 3)}',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ],
+          ),
+        ),
+        _buildProductList(items, monthLabel),
+      ],
+    );
+  }
+
   Widget _buildProductList(
       List<CategoryProductItem> items, String monthLabel) {
     if (items.isEmpty) {
@@ -317,35 +355,17 @@ class _CategoryDetailPageState
                     children: [
                       _buildChart(),
                       const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        child: Text(
-                          _monthLabel(0),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.green,
-                          ),
-                        ),
+                      _buildMonthSection(
+                        _data!.currentMonth,
+                        _monthLabel(0),
+                        Colors.green,
                       ),
-                      _buildProductList(
-                          _data!.currentMonth, _monthLabel(0)),
                       const SizedBox(height: 24),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        child: Text(
-                          _monthLabel(-1),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.blue,
-                          ),
-                        ),
+                      _buildMonthSection(
+                        _data!.lastMonth,
+                        _monthLabel(-1),
+                        Colors.blue,
                       ),
-                      _buildProductList(
-                          _data!.lastMonth, _monthLabel(-1)),
                     ],
                   ),
                 ),
