@@ -24,9 +24,18 @@ class ApiService {
         'Content-Type': 'application/json',
       };
 
-  static Future<http.Response> get(String path) async {
+  static Future<http.Response> get(String path, {Map<String, String>? queryParams}) async {
+    var uri = '$baseUrl${_withUser(path)}';
+
+    if (queryParams != null && queryParams.isNotEmpty) {
+      final separator = uri.contains('?') ? '&' : '?';
+      uri += separator + queryParams.entries
+          .map((e) => '${e.key}=${Uri.encodeComponent(e.value)}')
+          .join('&');
+    }
+
     return await http.get(
-      Uri.parse('$baseUrl${_withUser(path)}'),
+      Uri.parse(uri),
       headers: _headers,
     );
   }

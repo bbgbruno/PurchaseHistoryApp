@@ -5,8 +5,12 @@ import '../models/purchase_item.dart';
 import 'api_service.dart';
 
 class PurchaseService {
-  Future<List<Purchase>> getAll() async {
-    final response = await ApiService.get('/purchases');
+  Future<List<Purchase>> getAll({int? month, int? year}) async {
+    final queryParams = <String, String>{};
+    if (month != null) queryParams['month'] = month.toString();
+    if (year != null) queryParams['year'] = year.toString();
+
+    final response = await ApiService.get('/purchases', queryParams: queryParams.isNotEmpty ? queryParams : null);
 
     if (response.statusCode != 200) {
       throw Exception('Erro ao carregar compras');

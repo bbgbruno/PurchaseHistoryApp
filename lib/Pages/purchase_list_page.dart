@@ -22,10 +22,41 @@ class _PurchaseListPageState
 
   bool _loading = true;
 
+  late int _selectedMonth;
+  late int _selectedYear;
+
   @override
   void initState() {
     super.initState();
 
+    final now = DateTime.now();
+    _selectedMonth = now.month;
+    _selectedYear = now.year;
+
+    load();
+  }
+
+  void _previousMonth() {
+    setState(() {
+      if (_selectedMonth == 1) {
+        _selectedMonth = 12;
+        _selectedYear--;
+      } else {
+        _selectedMonth--;
+      }
+    });
+    load();
+  }
+
+  void _nextMonth() {
+    setState(() {
+      if (_selectedMonth == 12) {
+        _selectedMonth = 1;
+        _selectedYear++;
+      } else {
+        _selectedMonth++;
+      }
+    });
     load();
   }
 
@@ -36,7 +67,7 @@ class _PurchaseListPageState
 
     try {
       final result =
-          await _service.getAll();
+          await _service.getAll(month: _selectedMonth, year: _selectedYear);
 
       setState(() {
         _items = result;
@@ -116,6 +147,15 @@ class _PurchaseListPageState
     }
   }
 
+  String _monthLabel(int month) {
+    const months = [
+      'Janeiro', 'Fevereiro', 'Março', 'Abril',
+      'Maio', 'Junho', 'Julho', 'Agosto',
+      'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
+    return months[month - 1];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,28 +165,62 @@ class _PurchaseListPageState
         ),
       ),
 
-      body: _loading
-          ? const Center(
-              child:
-                  CircularProgressIndicator(),
-            )
-          : _items.isEmpty
-              ? const Center(
-                  child: Text(
-                    'Nenhuma compra encontrada.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey.shade300,
+                ),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.chevron_left),
+                  onPressed: _previousMonth,
+                ),
+                Text(
+                  '${_monthLabel(_selectedMonth)} $_selectedYear',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                   ),
-                )
-              : RefreshIndicator(
-                  onRefresh: load,
-                  child: ListView.builder(
-                    itemCount: _items.length,
-                    itemBuilder: (_, index) {
-                      final item =
-                          _items[index];
+                ),
+                IconButton(
+                  icon: const Icon(Icons.chevron_right),
+                  onPressed: _nextMonth,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: _loading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : _items.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'Nenhuma compra encontrada.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: load,
+                        child: ListView.builder(
+                          itemCount: _items.length,
+                          itemBuilder: (_, index) {
+                            final item =
+                                _items[index];
 
                       final fullyCat =
                           item.isFullyCategorized;
@@ -263,6 +337,9 @@ class _PurchaseListPageState
                     },
                   ),
                 ),
+          ),
+        ],
+      ),
     );
   }
 }
